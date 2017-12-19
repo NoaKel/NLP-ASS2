@@ -1,0 +1,188 @@
+# grammar 4 supports:
+# ## a & an (a) ##
+# example: a very ambivalent apple
+# example: an apple
+# example: an elf
+# example: an ordinary apple
+# For the first rule I created a Det with its equivalent Noun by extending:
+# NP  Det Noun
+# There are now “a” Nouns (starting with non-vowel) and “an” Nouns (starting with vowels)
+# When adding an adjective I extended:
+# Noun    Adj Noun
+# If a noun had an “a” det the extension will take an “a” adjective/adverb (starting with a non-vowel), if it had an “an” det the extension will take a “an” adjective/adverb (starting with vowels). The new Noun could be any of the nouns (“a” noun, “an” noun).
+# For the first rule I created a Det with its equivalent Noun by extending:
+# NP  Det Noun
+# There are now “a” Nouns (starting with non-vowel) and “an” Nouns (starting with vowels)
+# When adding an adjective I extended:
+# Noun    Adj Noun
+# If a noun had an “a” det the extension will take an “a” adjective/adverb (starting with a non-vowel), if it had an “an” det the extension will take a “an” adjective/adverb (starting with vowels). The new Noun could be any of the nouns (“a” noun, “an” noun).
+# ## yes/no questions (b) ##
+# The NP part remained the same as grammar2, the VP needs to work in a different tense.
+# I added form of questions as seen in the example and derived from grammar 2.
+# Now for the VP I had to create a new list of verb formation and rules to deal with question tense.
+# example: did Sally eat a sandwich ?
+# example: will Sally eat a sandwich ?
+# example: is Sally lazy?
+#######################
+
+# change the weight to more sentences ending with . later ! and than complex
+10	ROOT	S .
+3	ROOT	S !
+1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
+
+#### rules from grammar1 (besides expended rules)
+1	S	NP VP
+5	VP	TVerb NP
+1	NP	NP PP
+1	PP	Prep NP
+
+#### rules from grammar 2
+# rule to support (a): "Sally" only NP with no del
+10   NP  Name
+# rules to support (b): using and "Sally and the president", "wanted and ate"
+1   NP  NP And NP
+0.5   TVerb  TVerb And TVerb
+0.5   Iverb  Iverb And Iverb
+# rule to support (c): "sighted" is intransitive
+3	VP	Iverb
+# rule to support (d):  "thought that a"
+1   VP  ThatVerb That S
+# rule to support (e): "it perplexed the president that"
+1   VP  TVerb NP That S
+# rule to support (f): "the very very very perplexed" very has to come before an adj
+1   Adj Adv Adj
+# rules to support (g): "on every proposal on the desk" allows Det Noun Det Noun "worked on"
+2   VP	Iverb PP
+1	PP	PP PP
+# rule to support (h): "is lazy"
+3   VP  Vbz Adj
+# rule to support (i): "is eating"
+3	VP	Vbz Ing NP
+# rule to support (j): "is a sandwitch"
+3   VP  Vbz NP
+
+
+#### grammar4
+## A and AN (a)
+# explanation: we create a Det according to the noun.
+# The adj/adv is expended according to the delimiter and the next adj/adv is random
+# rules to expand: NP	Det Noun
+10   NP	Det Noun
+10   NP	Adet Noun
+10   NP  ANdet ANnoun
+
+# rules to expand: Noun	Adj Noun
+1   Noun   Adj Noun
+1   Noun   Adj ANnoun
+1   ANnoun   ANadj ANnoun
+1   ANnoun   ANadj Noun
+
+# rules to expand: Adj Adv Adj
+1   Adj   Adv Adj
+1   Adj   Adv ANadj
+1   ANadj   ANadv   Adj
+1   ANadj   ANadv   ANadj
+
+#dictionary
+5	Det	the
+5	Det	every
+
+2	Adet	a
+2	ANdet	an
+
+5   ANnoun   apple
+5   ANnoun   elf
+
+5   ANadj    extraordinary
+5   ANadj    ordinary
+5   ANadj    ambivalent
+
+5   ANadv   awfully
+
+## Yes No Questions (b)
+# explanation: the NP part remained the same as grammar2, the VP needs to work in a different tense
+# question format
+10	ROOT	Q ?
+
+# possible yes no questions
+1   Q   did NP VPQ
+1   Q   will NP VPQ
+1   Q   is NP  NP
+1   Q   is NP  Adj
+1   Q   is NP  Ing NP
+1   Q   is NP  Ing
+
+# expending VP for questions
+10   VPQ   Verbf NP
+10   VPQ   Iverbf
+10   VPQ   Iverbf PP
+0.5   VPQ  ThatVerbf That S
+0.5   Verbf  Verbf And Verbf
+0.5   Iverbf  Iverbf And Iverbf
+
+# dictionary of verb form
+3	Verbf	eat
+3	Verbf	want
+3	Verbf	kiss
+3	Verbf	understand
+3	Verbf	pickle
+3   Verbf   perplex
+
+1   ThatVerbf    want
+1   ThatVerbf    understand
+1   ThatVerbf    perplex
+1   ThatVerbf    think
+
+3   Iverbf  sight
+3   Iverbf  work
+3   Iverbf  eat
+3	Iverbf	kiss
+
+## original dictionary
+3	TVerb	ate
+3	TVerb	wanted
+3	TVerb	kissed
+3	TVerb	understood
+3	TVerb	pickled
+3   TVerb   perplexed
+
+1   Vbz    is
+
+1   Ing    eating
+
+1   ThatVerb   wanted
+1   ThatVerb   understood
+1   ThatVerb   thought
+
+3   Iverb    sighed
+3   Iverb    worked
+3   Iverb    ate
+3	Iverb	 kissed
+
+5	Noun	president
+5	Noun	sandwich
+5	Noun	pickle
+5	Noun	chief of staff
+5	Noun	floor
+5   Noun    proposal
+5   Noun    desk
+
+2	Adj	fine
+2	Adj	delicious
+2	Adj	perplexed
+2	Adj	pickled
+2   Adj lazy
+
+5   Adv     very
+
+1	Prep	with
+1	Prep	on
+1	Prep	under
+1	Prep	in
+
+1   And     and
+1   That    that
+1   Name    Sally
+1   Name    sally
+1   Name    it
+

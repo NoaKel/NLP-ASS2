@@ -1,0 +1,5 @@
+(ROOT (S (NP (Det a) (Noun pickle)) (VP (Vbz is) (NP (Det a) (Noun pickle)))) .)
+(ROOT (S (NP (Det a) (Noun desk)) (VP (Vbz is) (Ing kissing) (NP (Det the) (Noun chief of staff)))) .)
+(ROOT (S (NP (Det a) (Noun desk)) (VP (Vbz is) (Adj delicious))) !)
+(ROOT (S (NP (Name Sally)) (VP (IVerb worked) (PP (Prep on) (NP (Det a) (Noun (Adj perplexed) (Noun proposal)))))) !)
+(ROOT (S (NP (NP (Det the) (Noun chief of staff)) (PP (Prep on) (NP (Det the) (Noun floor)))) (VP (Vbz is) (Adj (Adv very) (Adj perplexed)))) .)

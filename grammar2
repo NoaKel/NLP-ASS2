@@ -1,0 +1,128 @@
+# grammar 2 supports:
+#(a) Sally ate a sandwich .
+#(b) Sally and the president wanted and ate a sandwich .
+#(c) the president sighed .
+#(d) the president thought that a sandwich sighed .
+#(e) it perplexed the president that a sandwich ate Sally .
+#(f) the very very very perplexed president ate a sandwich .
+#(g) the president worked on every proposal on the desk .
+#(h) Sally is lazy .
+#(i) Sally is eating a sandwich.
+#(j) the president thought that sally is a sandwich
+#######################
+
+# Rules for creating full sentences.
+
+# change the weight to more sentences ending with . later ! and than complex
+10	ROOT	S .
+3	ROOT	S !
+1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
+
+# The basic grammar rules.  Here's what the abbreviations stand for:
+#    S  = sentence
+#    NP = noun phrase
+#    VP = TVerb phrase
+#    PP = prepositional phrase
+#    And = link conjunctions
+#    That = sentence conjunctions
+#    Det = determiner (sometimes called "article")
+#    Prep = preposition
+#    Adj = adjective
+#    IVerb = intransitive TVerb
+#    TVerb = transitive TVerb
+#    ThatVerb = that verb
+#    Vbz = is
+#    Ing = ing TVerb
+#    Name = NPP
+
+# rules from grammar1
+1	S	NP VP
+3	VP	TVerb NP
+20	NP	Det Noun
+1	NP	NP PP
+1	PP	Prep NP
+5	Noun	Adj Noun
+
+#rules for grammar2
+# rule to support (a): "Sally" only NP with no del
+10   NP  Name
+# rules to support (b): using and "Sally and the president", "wanted and ate"
+1   NP  NP And NP
+1   TVerb  TVerb And TVerb
+1   IVerb  IVerb And IVerb
+# rule to support (c): "sighted" is intransitive
+3	VP	IVerb
+# rule to support (d):  "thought that a"
+1   VP  ThatVerb That S
+# rule to support (e): "it perplexed the president that"
+1   VP  TVerb NP That S
+# rule to support (f): "the very very very perplexed" very has to come before an adj
+1   Adj Adv Adj
+# rules to support (g): "on every proposal on the desk" allows Det Noun Det Noun "worked on"
+2	VP	IVerb PP
+1	PP	PP PP
+# rule to support (h): "is lazy"
+3   VP  Vbz Adj
+# rule to support (i): "is eating"
+3	VP	Vbz Ing NP
+# rule to support (j): "is a sandwitch"
+3   VP  Vbz NP
+
+
+# Vocabulary.  Your program can see that "ate" is a terminal
+# symbol because there exists no rule for rewriting it.
+# Any symbol that can rewrite as a terminal (or a string of 
+# terminals, like "chief of staff") is called a "preterminal."  Notice 
+# that a preterminal is a special kind of nonterminal.
+
+3	TVerb	ate
+3	TVerb	wanted
+3	TVerb	kissed
+3	TVerb	understood
+3	TVerb	pickled
+3   TVerb   perplexed
+
+1   Vbz    is
+
+1   Ing    eating
+1   Ing    kissing
+
+1   ThatVerb   wanted
+1   ThatVerb   understood
+1   ThatVerb   thought
+
+3   IVerb    sighed
+3   IVerb    worked
+3   IVerb    ate
+3	IVerb	 kissed
+
+2	Det	the
+2	Det	a
+1	Det	every
+
+1	Noun	president
+1	Noun	sandwich
+1	Noun	pickle
+1	Noun	chief of staff
+1	Noun	floor
+1   Noun    proposal
+1   Noun    desk
+
+2	Adj	fine
+2	Adj	delicious
+2	Adj	perplexed
+2	Adj	pickled
+2   Adj lazy
+
+1	Prep	with
+1	Prep	on
+1	Prep	under
+1	Prep	in
+
+1   And     and
+1   That    that
+1   Adv     very
+1   Name    Sally
+1   Name    sally
+1   Name    it
+
